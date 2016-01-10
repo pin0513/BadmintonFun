@@ -37,7 +37,7 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">Home</a></li>
                     <li><a href="#clearcache" ng-click="clearcache()">清除快取</a></li>
-                    <li><a href="#contact">連絡作者</a></li>
+                    <li><a href="#contact" ng-click="showAuthor()">連絡作者</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
@@ -56,6 +56,7 @@
                         <div id="playersPool">
                             <button ng-repeat="player in playerSource" type="button" ng-click="AddToAttendList(player)" class="btn btn-lg btn-default">
                                 {{player.name}}
+                                <label ng-show="IsMoreThenZero(player.TotalPlayedCount)">({{player.TotalPlayedCount}})</label>
                             </button>
                         </div>
                     </div>
@@ -63,20 +64,21 @@
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">上場名單</h3>
+                        <h3 class="panel-title">上場名單(暫時)</h3>
                     </div>
                     <div class="panel-body">
-                        <button ng-repeat="player in attendList | filter:query" type="button" ng-click="RemovePlayer(player)" class="btn btn-lg btn-warning">
+                        <button ng-repeat="player in attendList" type="button" ng-click="RemovePlayer(player)" class="btn btn-lg btn-warning">
                             {{player.name}}
                         </button>
-
-                        <button ng-show="IsShowSubmit()" type="button" ng-click="AddToRoundList(attendList)" class="btn btn-lg btn-success">送出</button>
+                    </div>
+                    <div class="panel-footer" ng-show="IsShowSubmit()">
+                        <button type="button" ng-click="AddToRoundList(attendList)" class="btn btn-lg btn-success">送出</button>
                     </div>
                 </div>
 
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title">出賽順序</h3>
+                        <h3 class="panel-title">上場順序</h3>
                     </div>
                     <div class="panel-body">
                         <ul class="list-group">
@@ -105,7 +107,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="player in playerStatic | filter:query" ng-click="">
+                                    <tr ng-repeat="player in playerStatic">
                                         <td>{{player.name}}</td>
                                         <td>{{player.Sex}}</td>
                                         <td>{{player.Power}}</td>
