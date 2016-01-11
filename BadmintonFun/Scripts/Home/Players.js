@@ -1,0 +1,18 @@
+﻿var _playersSource = [{ name: "一平", Sex: "男", Power: 60, TotalPlayedCount: 0 },
+                        { name: "小瑜", Sex: "女", Power: 99, TotalPlayedCount: 0 },
+                        { name: "湘傑", Sex: "男", Power: 98, TotalPlayedCount: 0 },
+                        { name: "家弘", Sex: "男", Power: 95, TotalPlayedCount: 0 },
+                        { name: "雅淳", Sex: "女", Power: 99, TotalPlayedCount: 0 },
+                        { name: "大白", Sex: "男", Power: 80, TotalPlayedCount: 0 },
+                        { name: "阿三哥", Sex: "男", Power: 93, TotalPlayedCount: 0 },
+                        { name: "亮維", Sex: "男", Power: 90, TotalPlayedCount: 0 },
+                        { name: "吳醫師", Sex: "男", Power: 90, TotalPlayedCount: 0 },
+                        { name: "慈婷", Sex: "女", Power: 90, TotalPlayedCount: 0 },
+                        { name: "韓國人", Sex: "男", Power: 98, TotalPlayedCount: 0 },
+                        //臨打球員
+                        { name: "阿蔡", Sex: "男", Power: 95, TotalPlayedCount: 0 },
+                        { name: "小P", Sex: "男", Power: 95, TotalPlayedCount: 0 },
+                        { name: "小拍", Sex: "男", Power: 95, TotalPlayedCount: 0 },
+                        { name: "千景", Sex: "男", Power: 97, TotalPlayedCount: 0 },
+                        { name: "一剛", Sex: "男", Power: 90, TotalPlayedCount: 0 },
+                        { name: "辛普森", Sex: "男", Power: 90, TotalPlayedCount: 0 }];

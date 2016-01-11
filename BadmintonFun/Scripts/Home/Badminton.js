@@ -1,37 +1,26 @@
 ﻿/**
  * @author Paul
  */
-var app = angular.module('BadmintonFun', []);
+var app = angular.module('BadmintonFun', [])
 
-var _playersSource =   [{ name: "一平", Sex: "男", Power: 60, TotalPlayedCount: 0 },
-                        { name: "小瑜", Sex: "女", Power: 99, TotalPlayedCount: 0 },
-                        { name: "湘傑", Sex: "男", Power: 98, TotalPlayedCount: 0 },
-                        { name: "家弘", Sex: "男", Power: 95, TotalPlayedCount: 0 },
-                        { name: "雅淳", Sex: "女", Power: 99, TotalPlayedCount: 0 },
-                        { name: "大白", Sex: "男", Power: 80, TotalPlayedCount: 0 },
-                        { name: "阿三哥", Sex: "男", Power: 93, TotalPlayedCount: 0 },
-                        { name: "亮維", Sex: "男", Power: 90, TotalPlayedCount: 0 },
-                        { name: "吳醫師", Sex: "男", Power: 90, TotalPlayedCount: 0 },
-                        { name: "慈婷", Sex: "女", Power: 90, TotalPlayedCount: 0 },
-                        { name: "韓國人", Sex: "男", Power: 98, TotalPlayedCount: 0 },
-                        //臨打球員
-                        { name: "阿蔡", Sex: "男", Power: 95, TotalPlayedCount: 0 },
-                        { name: "小P", Sex: "男", Power: 95, TotalPlayedCount: 0 },
-                        { name: "小拍", Sex: "男", Power: 95, TotalPlayedCount: 0 },
-                        { name: "千景", Sex: "男", Power: 97, TotalPlayedCount: 0 },
-                        { name: "一剛", Sex: "男", Power: 90, TotalPlayedCount: 0 },
-                        { name: "辛普森", Sex: "男", Power: 90, TotalPlayedCount: 0 }];
+/**
+ * Service，抽出來跨Controller共用
+ */
+app.factory('Utility', ['$window', function (win) {
+    return {
+        SetCache: function (key, value) {
+            win.localStorage.setItem(key, value)
+        },
+        ClearCache: function (key) {
+            win.localStorage.setItem(key, "");
+        }
+    }
+}]);
 
-var _objectIdList = {
-    playersPool: "#playersPool",
-    attendList: "#attendList",
-    todayRounds: "#todayRounds",
-
-    attend: "#attendBtn",
-    send: "#sendBtn"
-};
-
-app.controller('PlayerCtrl', ['$scope', function ($scope) {
+/**
+ * Controller
+ */
+app.controller('PlayerCtrl', ['$scope', 'Utility', function ($scope, Utility) {
 
     $scope.init = function () {
 
@@ -192,88 +181,8 @@ app.controller('PlayerCtrl', ['$scope', function ($scope) {
     //清除快取
     $scope.clearcache = function () {
         if (confirm("Sure?"))
-            window.localStorage.setItem("roundList", "");
+            Utility.ClearCache("roundList");
     };
 }]);
 
 
-
-
-/**
- * @class Badminton
- * @constructor
- * @return Badminton object
- * @author Paul
- */
-var badminton = function () {
-    /**
-    * @class _object object tool
-    * @constructor
-    * @return _action object object
-    */
-    _object = {
-        playersPool: "#playersPool",
-        attendList: "#attendList",
-        todayRounds: "#todayRounds",
-
-        attend: "#attendBtn",
-        send: "#sendBtn"
-    };
-
-    return {
-
-        /**
-        * init
-        * @function
-        */
-        init: function () {
-            var _that = this;
-            ////註冊事件
-            _that.documentEvent();
-        },
-
-        /**
-        * 註冊事件
-        * @function
-        */
-        documentEvent: function () {
-            var _that = this;
-            //出賽
-            $(document).off("click", _object.attend);
-            $(document).on("click", _object.attend, function () {
-                var $obj = $(this);
-
-                var selectedPlayer = $(_object.playersPool).find("input[type=radio]:checked").attr("playerName")
-
-                var $selectedAttendPlayers = $(_object.attendList + " .attendPlayer");
-                if ($selectedAttendPlayers.length >= 4) {
-                    alert("一個場只能排4個人");
-                    //清除
-                    if (confirm("是否要清除？"))
-                        $(_object.attendList).html("");
-                } else {
-                    $(_object.attendList).append("<li class='attendPlayer'>" + selectedPlayer + "</li>");
-                }
-
-                return false;
-            });
-
-            //出賽
-            $(document).off("click", _object.send);
-            $(document).on("click", _object.send, function () {
-                var $obj = $(this);
-                var $selectedAttendPlayers = $(_object.attendList + " .attendPlayer");
-                var roundCount = $(_object.todayRounds + " .round").length + 1;
-
-                if ($selectedAttendPlayers.length == 4) {
-                    $(_object.todayRounds).append("<li class='round'>場次:" + roundCount + "<ul>" + $(_object.attendList).html() + "</ul></li>");
-                    //清除
-                    $(_object.attendList).html("");
-                } else {
-                    alert("尚未完成出賽名單");
-                }
-                return false;
-            });
-        }
-    };
-};

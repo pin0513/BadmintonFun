@@ -120,6 +120,9 @@
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Home\Old.js" />
+    <Content Include="Scripts\Home\Objects.js" />
+    <Content Include="Scripts\Home\Players.js" />
     <Content Include="Scripts\Home\Badminton.js" />
     <Content Include="Scripts\jquery-1.9.0.js" />
     <Content Include="Scripts\jquery-1.9.0.min.js" />
