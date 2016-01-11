@@ -9,7 +9,10 @@ var app = angular.module('BadmintonFun', [])
 app.factory('Utility', ['$window', function (win) {
     return {
         SetCache: function (key, value) {
-            win.localStorage.setItem(key, value)
+            win.localStorage.setItem(key, value);
+        },
+        GetCache: function (key) {
+            win.localStorage.getItem(key);
         },
         ClearCache: function (key) {
             win.localStorage.setItem(key, "");
@@ -30,7 +33,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', function ($scope, Utility) {
         $scope.attendList = [];
 
         var roundList = [];
-        if (window.localStorage.getItem("roundList") != "") {
+        if (Utility.GetCache("roundList") != "") {
             console.log(window.localStorage.getItem("roundList"));
             roundList = JSON.parse(window.localStorage.getItem("roundList"));
         }
@@ -113,7 +116,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', function ($scope, Utility) {
 
         roundList.push(round);
 
-        window.localStorage.setItem("roundList", JSON.stringify(roundList));
+        Utility.SetCache("roundList", JSON.stringify(roundList));
         $scope.roundList = roundList;
 
         $scope.attendList = [];
@@ -140,7 +143,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', function ($scope, Utility) {
         });
 
         $scope.roundList = tempRoundList;
-        window.localStorage.setItem("roundList", JSON.stringify(tempRoundList));
+        Utility.SetCache("roundList", JSON.stringify(tempRoundList));
 
         $scope.refreshStatic();
         return false;
