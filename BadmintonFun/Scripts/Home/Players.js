@@ -12,7 +12,9 @@
                         //臨打球員
                         { name: "阿蔡", Sex: "男", Power: 95, TotalPlayedCount: 0 },
                         { name: "小P", Sex: "男", Power: 95, TotalPlayedCount: 0 },
-                        { name: "小拍", Sex: "男", Power: 95, TotalPlayedCount: 0 },
+                        { name: "柳迪", Sex: "女", Power: 95, TotalPlayedCount: 0 },
                         { name: "千景", Sex: "男", Power: 97, TotalPlayedCount: 0 },
                         { name: "一剛", Sex: "男", Power: 90, TotalPlayedCount: 0 },
+                        { name: "威利", Sex: "男", Power: 90, TotalPlayedCount: 0 },
+                        { name: "奚奚", Sex: "男", Power: 90, TotalPlayedCount: 0 },
                         { name: "辛普森", Sex: "男", Power: 90, TotalPlayedCount: 0 }];

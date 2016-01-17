@@ -14,6 +14,9 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet">
     <link href="~/Content/main-template.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -47,98 +50,147 @@
             <div class="page-header">
                 <h1>熊麻吉小隊-簡單排場</h1>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">球員清單</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="playersPool">
-                            <button ng-repeat="player in playerSource" type="button" ng-click="AddToAttendList(player)" class="btn btn-lg btn-default">
-                                {{player.name}}
-                                <label ng-show="IsMoreThenZero(player.TotalPlayedCount)">({{player.TotalPlayedCount}})</label>
-                            </button>
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#arrange">排場</a></li>
+                <li><a data-toggle="tab" href="#report">統計</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="arrange" class="tab-pane fade in active">
+                    <br />
+                    <div class="col-md-10">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">球員清單</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="playersPool">
+                                    <button ng-repeat="player in playerSource" type="button" ng-click="AddToAttendList(player)" class="btn btn-lg btn-default">
+                                        {{player.name}}
+                                        <label ng-show="IsMoreThenZero(player.TotalPlayedCount)">({{player.TotalPlayedCount}})</label>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">上場名單(暫時)</h3>
+                            </div>
+                            <div class="panel-body">
+                                <label class="radio-inline" ng-show="IsShowCourt(attendList)" ng-repeat="court in courtSource">
+                                    <input type="radio" ng-click="IsShowSubmit()" id="court{{court.id}}" name="attend_court" value="{{court.id}}" max-players="{{court.maxplayers}}" />{{court.name}}
+                                </label>
+                                <br />
+                                <div>
+                                    <button ng-repeat="player in attendList" type="button" ng-click="RemovePlayer(player)" class="btn btn-lg btn-warning">
+                                        {{player.name}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="panel-footer" ng-show="IsShowSubmit()">
+                                <button type="button" ng-click="AddToRoundList(attendList)" class="btn btn-lg btn-success">送出</button>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">上場順序</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="panel panel-success" ng-repeat="round in roundList">
+                                    <div class="panel-heading">
+                                        <div class="panel-title" ng-click="RemoveRound(round)">
+                                            場次：{{round.roundId}}
+                                            <img style="width:28px;height:20px;" src="~/Images/Delete_Icon.png" />
+                                        </div>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="alert alert-warning" role="alert" ng-show="round.status === 'wait'">
+                                            <strong>待上場</strong>
+                                        </div>
+                                        <div class="alert alert-success" role="alert" ng-show="round.status === 'start'">
+                                            <strong>已上場</strong>
+                                        </div>
+                                        <div class="alert alert-danger" role="alert" ng-show="round.status === 'finish'" ng-click="setRoundStatus(round,'wait')">
+                                            <strong>已下場</strong>
+                                        </div>
+                                        <label class="btn btn-lg btn-info" disabled>{{round.courtName}}</label>
+                                        <button ng-disabled="round.status === 'finish'" ng-repeat="player in round.players" type="button" ng-class="SetRoundStatusStyleClass(round)">{{player.name}}</button>
+                                    </div>
+                                    <div class="panel-footer" ng-show="round.status !== 'finish'">
+                                        <button class="btn btn-lg btn-success" ng-show="round.status !== 'start'" ng-click="setRoundStatus(round, 'start')">上場</button>
+                                        <button class="btn btn-lg btn-danger"  ng-show="round.status !== 'finish'" ng-click="setRoundStatus(round, 'finish')">下場</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <br />
                 </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">上場名單(暫時)</h3>
-                    </div>
-                    <div class="panel-body">
-                        <button ng-repeat="player in attendList" type="button" ng-click="RemovePlayer(player)" class="btn btn-lg btn-warning">
-                            {{player.name}}
-                        </button>
-                    </div>
-                    <div class="panel-footer" ng-show="IsShowSubmit()">
-                        <button type="button" ng-click="AddToRoundList(attendList)" class="btn btn-lg btn-success">送出</button>
-                    </div>
-                </div>
-
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">上場順序</h3>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="list-group">
-                            <li class="list-group-item" ng-repeat="round in roundList" ng-click="RemoveRound(round)">
-                                <h3>場次：{{round.roundId}}</h3>
-                                <button ng-repeat="player in round.players" type="button" class="btn btn-lg btn-success">{{player.name}}</button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">球員出賽統計</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="playersStatistics">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>球員名稱</th>
-                                        <th>性別</th>
-                                        <th>能力</th>
-                                        <th>上場次數</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="player in playerStatic">
-                                        <td>{{player.name}}</td>
-                                        <td>{{player.Sex}}</td>
-                                        <td>{{player.Power}}</td>
-                                        <td>{{player.TotalPlayedCount}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                <div id="report" class="tab-pane fade">
+                    <br />
+                    <div class="col-md-10">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">球員出賽統計</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div id="playersStatistics">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>球員名稱</th>
+                                                <th>性別</th>
+                                                <th>能力</th>
+                                                <th>上場次數</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="player in playerStatic">
+                                                <td>{{player.name}}</td>
+                                                <td>{{player.Sex}}</td>
+                                                <td>{{player.Power}}</td>
+                                                <td>{{player.TotalPlayedCount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <br />
                 </div>
             </div>
+
+
+
+
 
         </div>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 
     <script src="~/Scripts/jquery-1.9.0.min.js"></script>
+
+    <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="~/Scripts/bootstrap.min.js"></script>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="~/Scripts/Home/Objects.js"></script>
+
     <script src="~/Scripts/Home/Players.js"></script>
+    <script src="~/Scripts/Home/Courts.js"></script>
     <script src="~/Scripts/Home/Badminton.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var _badmintonSunday = new badminton();
-            _badmintonSunday.init();
+            //var _badmintonSunday = new badminton();
+            //_badmintonSunday.init();
         });
     </script>
 </body>
