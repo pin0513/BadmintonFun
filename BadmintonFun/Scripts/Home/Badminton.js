@@ -59,6 +59,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', 'DataHelper', function ($scop
             round_chk_roundWait: "#round_btn_roundWait",
             round_chk_roundStart: "#round_btn_roundStart",
             round_chk_roundFinish: "#round_btn_roundFinish",
+            round_txtarea_Log: "#roundLogTextArea",
         };
     };
 
@@ -252,6 +253,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', 'DataHelper', function ($scop
         }
     };
 
+    //設定場次的狀態
     $scope.setRoundStatus = function (round, status) {
         var tempRoundList = $scope.roundList;
 
@@ -271,6 +273,7 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', 'DataHelper', function ($scop
 
     };
 
+    //設定場次內球員按鈕的style
     $scope.SetRoundStatusStyleClass = function (round) {
         if (round.status == 'finish')
             return "btn btn-lg btn-default";
@@ -279,6 +282,17 @@ app.controller('PlayerCtrl', ['$scope', 'Utility', 'DataHelper', function ($scop
         else
             return "btn btn-lg btn-success";
 
+    };
+
+    //更新場次記錄
+    $scope.UpdateRoundList = function () {
+        if (confirm("確定要更新?")) {
+            var updateLog = $($scope.elements().round_txtarea_Log).val();
+            if (updateLog != undefined && updateLog != "") {
+                Utility.SetCache("roundList", updateLog);
+            }
+            location.reload();
+        }
     };
 
     //清除快取

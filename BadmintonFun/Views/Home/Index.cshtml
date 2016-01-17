@@ -54,6 +54,7 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#arrange">排場</a></li>
                 <li><a data-toggle="tab" href="#report">統計</a></li>
+                <li><a data-toggle="tab" href="#roundLog">記錄</a></li>
             </ul>
 
             <div class="tab-content">
@@ -99,7 +100,7 @@
                                 <h3 class="panel-title">上場順序</h3>
                             </div>
                             <div class="panel-body">
-                                <div class="panel panel-success" ng-repeat="round in roundList">
+                                <div class="panel panel-success" ng-repeat="round in roundList | orderBy:'-roundId'">
                                     <div class="panel-heading">
                                         <div class="panel-title" ng-click="RemoveRound(round)">
                                             場次：{{round.roundId}}
@@ -121,7 +122,7 @@
                                     </div>
                                     <div class="panel-footer" ng-show="round.status !== 'finish'">
                                         <button class="btn btn-lg btn-success" ng-show="round.status !== 'start'" ng-click="setRoundStatus(round, 'start')">上場</button>
-                                        <button class="btn btn-lg btn-danger"  ng-show="round.status !== 'finish'" ng-click="setRoundStatus(round, 'finish')">下場</button>
+                                        <button class="btn btn-lg btn-danger" ng-show="round.status !== 'finish'" ng-click="setRoundStatus(round, 'finish')">下場</button>
                                     </div>
                                 </div>
                             </div>
@@ -161,6 +162,15 @@
                         </div>
                     </div>
                     <br />
+                </div>
+                <div id="roundLog" class="tab-pane fade">
+                    <div class="form-group">
+                        <label for="RoundLog">RoundLog:</label>
+                        <textarea class="form-control" rows="15" id="roundLogTextArea">
+                            {{roundList}}
+                        </textarea>
+                        <button type="button" ng-click="UpdateRoundList()" class="btn btn-lg btn-success">更新</button>
+                    </div>
                 </div>
             </div>
 
